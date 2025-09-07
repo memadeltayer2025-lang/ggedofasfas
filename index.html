@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الجملة الاسمية - فصفص لي لغتي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Amiri', serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b3e5fc 50%, #81d4fa 100%);
+        }
+        
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .choice-box {
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .choice-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .correct-answer {
+            animation: correctGlow 2s ease-in-out;
+            background: linear-gradient(135deg, #10b981, #34d399) !important;
+            color: white !important;
+            border-color: #059669 !important;
+            transform: scale(1.05);
+        }
+        
+        @keyframes correctGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.8);
+            }
+        }
+        
+        .timer-pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .slide-transition {
+            animation: slideIn 0.8s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .firework {
+            position: absolute;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .firework-1 {
+            animation: explode1 3s ease-out forwards;
+        }
+        
+        .firework-2 {
+            animation: explode2 3s ease-out forwards;
+        }
+        
+        .firework-3 {
+            animation: explode3 3s ease-out forwards;
+        }
+        
+        .firework-4 {
+            animation: explode4 3s ease-out forwards;
+        }
+        
+        .firework-5 {
+            animation: explode5 3s ease-out forwards;
+        }
+        
+        @keyframes explode1 {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% { 
+                transform: scale(1.5) rotate(180deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(0.5) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes explode2 {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            30% { 
+                transform: scale(2) rotate(-180deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(0.3) rotate(-540deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes explode3 {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            25% { 
+                transform: scale(1.8) rotate(360deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(0.4) rotate(900deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes explode4 {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            35% { 
+                transform: scale(1.6) rotate(-270deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(0.6) rotate(-810deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes explode5 {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            40% { 
+                transform: scale(2.2) rotate(450deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(0.2) rotate(1080deg);
+                opacity: 0;
+            }
+        }
+        
+        .glowing-text {
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1), 
+                         0 0 25px rgba(255, 215, 0, 0.8), 
+                         0 0 35px rgba(255, 215, 0, 0.6),
+                         0 0 45px rgba(255, 215, 0, 0.4);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 15px rgba(255, 215, 0, 1), 
+                             0 0 25px rgba(255, 215, 0, 0.8), 
+                             0 0 35px rgba(255, 215, 0, 0.6),
+                             0 0 45px rgba(255, 215, 0, 0.4);
+            }
+            to {
+                text-shadow: 0 0 25px rgba(255, 215, 0, 1), 
+                             0 0 35px rgba(255, 215, 0, 0.9), 
+                             0 0 45px rgba(255, 215, 0, 0.7),
+                             0 0 55px rgba(255, 215, 0, 0.5);
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center">
+    <!-- Mobile Optimized Container -->
+    <div class="w-full h-screen relative overflow-hidden">
+            
+            <!-- Question Slide -->
+            <div id="question-slide" class="absolute inset-0 question-card slide-transition">
+                <div class="h-full flex flex-col justify-between p-6">
+                    
+                    <!-- Question Section (Top Center) -->
+                    <div class="text-center mb-2 pt-4">
+                        <div class="text-4xl text-purple-600 mb-4 font-bold glowing-text">✨ فصفص لي لغتي ✨</div>
+                        <div class="text-xl text-cyan-700 mb-2 font-bold">🧩 فوازير جدو فصفص 🧩</div>
+                        
+                        <!-- Timer Section moved here -->
+                        <div class="mb-2">
+                            <div class="flex items-center justify-center mb-2">
+                                <div id="timer" class="text-3xl font-bold text-red-500 timer-pulse bg-red-100 px-4 py-2 rounded-full">
+                                    15
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-lg text-cyan-600 mb-2 font-bold">السؤال الأول</div>
+                        <div class="bg-gradient-to-r from-cyan-100 to-sky-100 p-4 rounded-xl shadow-lg mx-4 mb-1">
+                            <h2 id="question-text" class="text-2xl font-bold text-gray-800 leading-relaxed">
+                                ما هي الجملة الاسمية؟
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- Choices Section -->
+                    <div class="px-4 mb-1">
+                        <div class="grid grid-cols-1 gap-3 w-full max-w-md mx-auto">
+                            <div id="choice-1" class="choice-box bg-sky-50 hover:bg-sky-100 p-4 rounded-xl border-2 border-sky-200">
+                                <div class="text-lg font-bold text-sky-800 text-center">
+                                    الجملة التي تبدأ بفعل
+                                </div>
+                            </div>
+                            <div id="choice-2" class="choice-box bg-cyan-50 hover:bg-cyan-100 p-4 rounded-xl border-2 border-cyan-200">
+                                <div class="text-lg font-bold text-cyan-800 text-center">
+                                    الجملة التي تبدأ باسم
+                                </div>
+                            </div>
+                            <div id="choice-3" class="choice-box bg-blue-50 hover:bg-blue-100 p-4 rounded-xl border-2 border-blue-200">
+                                <div class="text-lg font-bold text-blue-800 text-center">
+                                    الجملة التي تبدأ بحرف
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="text-center pb-2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Question Preview (Hidden initially) -->
+            <div id="next-slide" class="absolute inset-0 question-card hidden">
+                <div class="h-full flex items-center justify-center">
+                    <div class="text-center px-6">
+                        <h2 class="text-3xl font-bold text-cyan-700 mb-6">السؤال التالي...</h2>
+                        <div class="text-xl text-gray-600">جاري التحضير</div>
+                        <div class="mt-6 text-4xl">📚</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timeLeft = 15;
+        let timerInterval;
+        let audioContext;
+        let isAnswerShown = false;
+        let currentQuestion = 0;
+        
+        const questions = [
+            {
+                question: "ما هي الجملة الاسمية؟",
+                choices: [
+                    "الجملة التي تبدأ بفعل",
+                    "الجملة التي تبدأ باسم",
+                    "الجملة التي تبدأ بحرف"
+                ],
+                correct: 1
+            },
+            {
+                question: "أي من الجمل التالية تُعتبر جملة اسمية مكتملة الأركان؟",
+                choices: [
+                    "يلعب الطفل في الحديقة",
+                    "الطالب مجتهد في دروسه",
+                    "اكتب الواجب بعناية"
+                ],
+                correct: 1
+            },
+            {
+                question: "ما هو المبتدأ في الجملة: 'الكتاب مفيد للطلاب'؟",
+                choices: [
+                    "مفيد",
+                    "الكتاب",
+                    "للطلاب"
+                ],
+                correct: 1
+            },
+            {
+                question: "أي من هذه الجمل تحتوي على خبر مفرد؟",
+                choices: [
+                    "الطائر يغرد في الصباح",
+                    "المعلم شرح الدرس",
+                    "الطقس جميل اليوم"
+                ],
+                correct: 2
+            },
+            {
+                question: "في الجملة 'الطلاب في الفصل'، ما نوع الخبر؟",
+                choices: [
+                    "خبر مفرد",
+                    "خبر جملة",
+                    "خبر شبه جملة"
+                ],
+                correct: 2
+            },
+            {
+                question: "أي من الجمل التالية مبتدؤها ضمير منفصل؟",
+                choices: [
+                    "الولد نشيط",
+                    "هو طالب مجتهد",
+                    "كتابي على الطاولة"
+                ],
+                correct: 1
+            },
+            {
+                question: "ما إعراب كلمة 'سعيدة' في الجملة: 'البنت سعيدة'؟",
+                choices: [
+                    "مبتدأ مرفوع",
+                    "خبر مرفوع",
+                    "نعت مرفوع"
+                ],
+                correct: 1
+            },
+            {
+                question: "أي من هذه الجمل تحتوي على خبر جملة فعلية؟",
+                choices: [
+                    "الشمس مشرقة",
+                    "الطيور تغرد",
+                    "الحديقة واسعة"
+                ],
+                correct: 1
+            },
+            {
+                question: "في أي حالة يُحذف المبتدأ وجوباً؟",
+                choices: [
+                    "إذا كان ضميراً",
+                    "في أسلوب التعجب",
+                    "إذا دل عليه دليل"
+                ],
+                correct: 1
+            },
+            {
+                question: "ما نوع الخبر في الجملة: 'الطالب أبوه معلم'؟",
+                choices: [
+                    "خبر مفرد",
+                    "خبر جملة اسمية",
+                    "خبر جملة فعلية"
+                ],
+                correct: 1
+            },
+            {
+                question: "أي من الكلمات التالية يمكن أن تكون مبتدأ؟",
+                choices: [
+                    "في المدرسة",
+                    "يدرس بجد",
+                    "العلم نور"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Initialize audio context
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Create beep sound for countdown
+        function playTickSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 600;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Create firework explosion sound
+        function playFireworkSound() {
+            if (!audioContext) return;
+            
+            // Create explosion sound with white noise
+            const bufferSize = audioContext.sampleRate * 0.3; // 0.3 seconds
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+            }
+            
+            const noise = audioContext.createBufferSource();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            noise.buffer = buffer;
+            filter.type = 'highpass';
+            filter.frequency.value = 1000;
+            
+            noise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            noise.start(audioContext.currentTime);
+            noise.stop(audioContext.currentTime + 0.3);
+        }
+        
+        // Create multiple firework sounds
+        function playFireworksSequence() {
+            if (!audioContext) return;
+            
+            // Play 5 firework sounds with delays
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    playFireworkSound();
+                }, i * 200);
+            }
+        }
+
+        function updateQuestion() {
+            const questionData = questions[currentQuestion];
+            document.getElementById('question-text').textContent = questionData.question;
+            document.querySelector('.text-cyan-600').textContent = `السؤال ${currentQuestion + 1}`;
+            
+            const choices = document.querySelectorAll('.choice-box');
+            choices.forEach((choice, index) => {
+                choice.querySelector('div').textContent = questionData.choices[index];
+                choice.classList.remove('correct-answer');
+                choice.style.transform = '';
+                choice.style.boxShadow = '';
+            });
+            
+            // Reset timer
+            timeLeft = 15;
+            isAnswerShown = false;
+            document.getElementById('timer').textContent = timeLeft;
+            document.getElementById('timer').classList.remove('text-green-600', 'bg-green-100');
+            document.getElementById('timer').classList.add('text-red-500', 'bg-red-100', 'timer-pulse');
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                
+                // Play tick sound
+                if (timeLeft > 0) {
+                    playTickSound();
+                }
+                
+                // Change timer color as time runs out
+                const timerElement = document.getElementById('timer');
+                if (timeLeft <= 5) {
+                    timerElement.classList.remove('text-red-500', 'bg-red-100');
+                    timerElement.classList.add('text-red-700', 'bg-red-200');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showAnswer();
+                }
+            }, 1000);
+        }
+
+        // Create animated fireworks
+        function createFireworks() {
+            const container = document.body;
+            const fireworkEmojis = ['🎆', '🎇', '✨', '💥', '🌟'];
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = `firework firework-${(i % 5) + 1}`;
+                    firework.textContent = fireworkEmojis[Math.floor(Math.random() * fireworkEmojis.length)];
+                    
+                    // Random position
+                    firework.style.left = Math.random() * window.innerWidth + 'px';
+                    firework.style.top = Math.random() * window.innerHeight + 'px';
+                    
+                    container.appendChild(firework);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.parentNode.removeChild(firework);
+                        }
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+        
+        function showAnswer() {
+            if (isAnswerShown) return;
+            isAnswerShown = true;
+            
+            // Get the correct answer for current question
+            const questionData = questions[currentQuestion];
+            const correctChoice = document.getElementById(`choice-${questionData.correct + 1}`);
+            
+            // Play fireworks sounds
+            playFireworksSequence();
+            
+            // Create animated fireworks
+            createFireworks();
+            
+            // Highlight correct answer
+            correctChoice.classList.add('correct-answer');
+            
+            // Hide timer pulse animation
+            document.getElementById('timer').classList.remove('timer-pulse');
+            
+            // Show success message
+            setTimeout(() => {
+                const timerElement = document.getElementById('timer');
+                timerElement.innerHTML = '✅';
+                timerElement.classList.remove('text-red-700', 'bg-red-200');
+                timerElement.classList.add('text-green-600', 'bg-green-100');
+            }, 1000);
+            
+            // Transition to next question after 4 seconds
+            setTimeout(() => {
+                nextQuestion();
+            }, 4000);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion >= questions.length) {
+                // Show completion message
+                showCompletion();
+                return;
+            }
+            
+            // Update to next question
+            clearInterval(timerInterval);
+            updateQuestion();
+            
+            // Start timer for new question
+            setTimeout(() => {
+                startTimer();
+            }, 1000);
+        }
+        
+        function showCompletion() {
+            const currentSlide = document.getElementById('question-slide');
+            const nextSlide = document.getElementById('next-slide');
+            
+            // Update completion message
+            nextSlide.querySelector('h2').textContent = '🎉 تهانينا! 🎉';
+            nextSlide.querySelector('.text-xl').textContent = 'لقد أكملت جميع الأسئلة بنجاح';
+            nextSlide.querySelector('.mt-6').textContent = '🏆';
+            
+            // Fade out current slide
+            currentSlide.style.transition = 'opacity 0.8s ease-out';
+            currentSlide.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentSlide.classList.add('hidden');
+                nextSlide.classList.remove('hidden');
+                nextSlide.style.opacity = '0';
+                nextSlide.style.transition = 'opacity 0.8s ease-in';
+                
+                setTimeout(() => {
+                    nextSlide.style.opacity = '1';
+                }, 100);
+            }, 800);
+        }
+
+        // Initialize the quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            initAudio();
+            
+            // Enable audio context on first user interaction
+            document.addEventListener('click', function enableAudio() {
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                document.removeEventListener('click', enableAudio);
+            }, { once: true });
+            
+            // Load first question
+            updateQuestion();
+            
+            // Start timer after a brief delay
+            setTimeout(() => {
+                startTimer();
+            }, 2000);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b81fbab031e1ac',t:'MTc1NzI2ODIxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
